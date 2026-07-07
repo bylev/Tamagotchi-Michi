@@ -6,14 +6,14 @@ public class Mascota {
     private Date fechaNacimiento;
     private int hambre;
     private int energia;
-    private int aburrimiento;
+    private int felicidad;
 
     public Mascota(String nombre) {
         this.nombre = nombre;
         this.edad = 0;
         this.hambre = 50;
         this.energia = 100;
-        this.aburrimiento = 50;
+        this.felicidad = 50;
         this.fechaNacimiento = new Date(); // fecha actual
     }
 
@@ -31,8 +31,8 @@ public class Mascota {
         this.energia = Math.max(0, Math.min(100, energia));
     }
 
-    public void setAburrimiento(int aburrimiento) {
-        this.aburrimiento = Math.max(0, Math.min(100, aburrimiento));
+    public void setFelicidad(int felicidad) {
+        this.felicidad = Math.max(0, Math.min(100, felicidad));
     }
 
     // Getters
@@ -57,8 +57,8 @@ public class Mascota {
         return this.energia;
     }
 
-    public int getAburrimiento() {
-        return this.aburrimiento;
+    public int getFelicidad() {
+        return this.felicidad;
     }
 
     public String toString() {
@@ -66,7 +66,11 @@ public class Mascota {
                 "\nEdad: " + this.edad +
                 "\nHambre: " + this.hambre +
                 "\nEnergia: " + this.energia +
-                "\nAburrimiento: " + this.aburrimiento;
+                "\nFelicidad: " + this.felicidad;
+    }
+
+    public boolean estaVivo() {
+        return this.hambre > 0 && this.energia > 0 && this.felicidad > 0;
     }
 
     // Métodos
@@ -76,10 +80,44 @@ public class Mascota {
             System.out.println("No tiene hambre");
             return;
         }
-
         setHambre(this.hambre + cantidad);
         setEnergia(this.energia - 5);
-        setAburrimiento(this.aburrimiento + 5);
+        setFelicidad(this.felicidad + 5);
         System.out.println("Alimentado, hambre:" + getHambre());
+    }
+
+    public void jugar() {
+        if (getFelicidad() == 100) {
+            System.out.println("Ya está muy feliz, no quiere jugar más");
+            return;
+        }
+        setFelicidad(this.felicidad + 10);
+        setEnergia(this.energia - 10);
+        setHambre(this.hambre - 10);
+        System.out.println("Jugando, felicidad:" + getFelicidad());
+    }
+
+    public void dormir() {
+        if (getEnergia() == 100) {
+            System.out.println("Ya está descansado, no necesita dormir");
+            return;
+        }
+        setEnergia(this.energia + 20);
+        setHambre(this.hambre - 10);
+        System.out.println("Durmiendo, energia:" + getEnergia());
+    }
+
+    public void pasarTiempo() {
+        setHambre(this.hambre - 5);
+        setEnergia(this.energia - 5);
+        setFelicidad(this.felicidad - 5);
+
+        if (!estaVivo()) {
+            System.out.println(getNombre() + " ha muerto.");
+            return;
+        }
+        System.out.println("Pasando tiempo -> hambre:" + getHambre() +
+                " energia:" + getEnergia() +
+                " felicidad:" + getFelicidad());
     }
 }
